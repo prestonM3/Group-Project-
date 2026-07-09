@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from ..dependencies.database import Base
 
-Class PromoCode(Base):
+class PromoCode(Base):
     __tablename__ = "promo_codes"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
