@@ -11,4 +11,8 @@ class PromoCode(Base):
     discount = Column(Integer, index=True, nullable=False)
     expiration_date = Column(DATETIME, nullable=False)
 
+    # Functions
+    validation = None
+    apply_discount = None
+
     orders = relationship("Order", back_populates="promo_code")
