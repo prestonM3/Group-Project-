@@ -7,3 +7,13 @@ class Payment(Base):
     __tablename__ = "payment"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    payment_type = Column(String(8), index=True, nullable=False)
+    payment_status = Column(String(8), index=True, nullable=False)
+    card_type = Column(String(8), index=True, nullable=False)
+    card_number = Column(Integer, index=True, nullable=False)
+    confirmation_code = Column(Integer, index=True, nullable=False)
+
+    # Functions
+    submit_payment = None
+
+
