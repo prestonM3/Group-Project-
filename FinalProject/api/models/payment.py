@@ -11,6 +11,7 @@ class Payment(Base):
     payment_status = Column(String(8), index=True, nullable=False)
     card_type = Column(String(8), index=True, nullable=False)
     card_number = Column(Integer, index=True, nullable=False)
+    card_expiry_date = Column(DATETIME, nullable=False)
     confirmation_code = Column(Integer, index=True, nullable=False)
 
     # Functions
