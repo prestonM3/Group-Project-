@@ -13,7 +13,7 @@ class PaymentCreate(PaymentBase):
     pass
 
 
-class PaymentResponse(PaymentBase):
+class Payment(PaymentBase):
     id: int
     generated_at: datetime
 

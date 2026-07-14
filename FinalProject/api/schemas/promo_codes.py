@@ -10,7 +10,7 @@ class PromoCodeCreate(PromoCodeBase):
     pass
 
 
-class PromoCodeResponse(PromoCodeBase):
+class PromoCode(PromoCodeBase):
     id: int
     updated_at: datetime
 
