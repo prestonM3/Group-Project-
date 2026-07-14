@@ -7,6 +7,7 @@ class Payment(Base):
     __tablename__ = "payment"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    order_id = Column(Integer, ForeignKey("orders.id"), nullable=False, unique=True)
     payment_type = Column(String(8), index=True, nullable=False)
     payment_status = Column(String(8), index=True, nullable=False)
     card_type = Column(String(8), index=True, nullable=False)
@@ -17,4 +18,4 @@ class Payment(Base):
     # Functions
     submit_payment = None
 
-
+    order = relationship("Order", back_populates="payment")
