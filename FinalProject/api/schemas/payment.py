@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class PaymentBase(BaseModel):
+    order_id: int
     payment_type: str
     payment_status: str
     card_type: str
@@ -12,10 +13,10 @@ class PaymentBase(BaseModel):
 class PaymentCreate(PaymentBase):
     pass
 
-
 class Payment(PaymentBase):
     id: int
-    generated_at: datetime
+    payment_status: str
+    confirmation_code: int | None
 
     class Config:
         from_attributes = True
