@@ -1,7 +1,9 @@
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+
 from .routers import index as indexRoute
+from .routers import payment
 from .models import model_loader
 from .dependencies.config import conf
 
@@ -18,6 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Adding all routers
 model_loader.index()
 indexRoute.load_routes(app)
 
