@@ -5,7 +5,7 @@ class PaymentBase(BaseModel):
     payment_type: str
     payment_status: str
     card_type: str
-    card_number: int
+    card_number: str
     card_expiry_date: datetime
     confirmation_code: int
 
