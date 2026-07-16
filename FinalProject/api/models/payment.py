@@ -2,6 +2,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String, DECIMAL, DATETIME
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from ..dependencies.database import Base
+import random
 
 class Payment(Base):
     __tablename__ = "payment"
@@ -11,11 +12,21 @@ class Payment(Base):
     payment_type = Column(String(8), index=True, nullable=False)
     payment_status = Column(String(8), index=True, nullable=False)
     card_type = Column(String(8), index=True, nullable=False)
-    card_number = Column(String(16))
+    card_number = Column(String(16), nullable=False)
     card_expiry_date = Column(DATETIME, nullable=False)
-    confirmation_code = Column(Integer, index=True, nullable=False)
+    confirmation_code = Column(Integer, index=True)
+
+    # Relationships
+    order = relationship("Order", back_populates="payment")
 
     # Functions
-    submit_payment = None
+    def submit_payment(self):
+        if self.card_expiry_date < datetime.now():
+            self.payment_status = "FAILED"
+            return False
 
-    order = relationship("Order", back_populates="payment")
+        self.payment_status = "SUCCESS"
+        self.confirmation_code = random.randint(1000, 9999)
+
+        return True
+
