@@ -9,12 +9,12 @@ class Payment(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False, unique=True)
-    payment_type = Column(String(8), index=True, nullable=False)
+    payment_type = Column(String(8), index=True, nullable=False, default="PENDING")
     payment_status = Column(String(8), index=True, nullable=False)
     card_type = Column(String(8), index=True, nullable=False)
     card_number = Column(String(16), nullable=False)
     card_expiry_date = Column(DATETIME, nullable=False)
-    confirmation_code = Column(Integer, index=True)
+    confirmation_code = Column(Integer, index=True, nullable=True)
 
     # Relationships
     order = relationship("Order", back_populates="payment")
@@ -23,6 +23,7 @@ class Payment(Base):
     def submit_payment(self):
         if self.card_expiry_date < datetime.now():
             self.payment_status = "FAILED"
+            self.confirmation_code = None
             return False
 
         self.payment_status = "SUCCESS"
