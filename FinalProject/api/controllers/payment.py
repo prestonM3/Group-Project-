@@ -1,11 +1,12 @@
 from sqlalchemy.orm import Session
-from fastapi import HTTPException, status, Response, Depends
+from fastapi import HTTPException, status, Response
 from ..models.payment import Payment
 from ..schemas.payment import PaymentCreate
 from sqlalchemy.exc import SQLAlchemyError
 
-# Create new payment to submit and sore in database
-def create_payment(payment: PaymentCreate, db:Session):
+
+# Create new payment to submit and store in database
+def create(payment: PaymentCreate, db: Session):
     db_payment = Payment(
         order_id=payment.order_id,
         payment_type=payment.payment_type,
@@ -16,53 +17,66 @@ def create_payment(payment: PaymentCreate, db:Session):
     )
 
     db_payment.submit_payment()
-
-    db.add(db_payment)
-    db.commit()
-    db.refresh(db_payment)
-
+    try:
+        db.add(db_payment)
+        db.commit()
+        db.refresh(db_payment)
+    except SQLAlchemyError as e:
+        error = str(e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=error
+        )
     return db_payment
 
 # Get all payments in database
-def get_payments(db:Session):
-    return db.query(Payment).all()
+def read_all(db: Session):
+    try:
+        result = db.query(Payment).all()
+    except SQLAlchemyError as e:
+        error = str(e)
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=error
+        )
+    return result
 
 # Get payment based on order ID
-def get_payments_by_order_id(payment_id: int, db:Session):
-    payment = db.query(Payment).filter(Payment.id == payment_id).first()
-
-    if payment is None:
-        raise HTTPException(status_code=404, detail="Payment not found")
-
-    return payment
-
-# Update payment data saved in database
-def update_payment(payment_id: int, payment_data: PaymentCreate, db: Session):
-    db_payment = db.query(Payment).filter(Payment.id == payment_id).first()
-
-    if db_payment is None:
-        raise HTTPException(status_code=404, detail="Payment not found")
-
-    db_payment.payment_type = payment_data.payment_type
-    db_payment.payment_status = payment_data.payment_status
-    db_payment.card_type = payment_data.card_type
-    db_payment.card_number = payment_data.card_number
-    db_payment.card_expiry_date = payment_data.card_expiry_date
-    db_payment.confirmation_code = payment_data.confirmation_code
-
-    db.commit()
-    db.refresh(db_payment)
-
+def read_one(payment_id: int, db: Session):
+    try:
+        db_payment = db.query(Payment).filter(Payment.id == payment_id).first()
+        if db_payment is None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id not found!")
+    except SQLAlchemyError as e:
+        error = str(e)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return db_payment
 
+# Update payment data saved in database
+def update(payment_id: int, payment_data: PaymentCreate, db: Session):
+    try:
+        db_payment = db.query(Payment).filter(Payment.id == payment_id)
+        if db_payment.first() is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
+
+        update_payment = payment_data.model_dump(exclude_unset=True)
+        db_payment.update(update_payment, synchronize_session=False)
+        db.commit()
+    except SQLAlchemyError as e:
+        error = str(e)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+    return db_payment.first()
+
 # Delete a payment
-def delete_payment(payment_id: int, db: Session):
-    payment = db.query(Payment).filter(Payment.id== payment_id).first()
+def delete(payment_id: int, db: Session):
+    try:
+        payment = db.query(Payment).filter(Payment.id == payment_id).first()
+        if payment is None:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id not found!")
 
-    if payment is None:
-        raise HTTPException(status_code=404, detail="Payment not found")
-
-    db.delete(payment)
-    db.commit()
-
-    return {"message": "Payment successfully deleted"}
+        db.delete(payment)
+        db.commit()
+    except SQLAlchemyError as e:
+        error = str(e)
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
