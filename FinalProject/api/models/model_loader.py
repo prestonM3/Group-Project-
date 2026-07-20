@@ -1,4 +1,4 @@
-from . import orders, order_items, order_tracking, menu_items, promo_codes, payment, data_analysis, System_doc, customer_feedback
+from . import orders, order_items, order_tracking, menu_items, promo_codes, payment, data_analysis, System_doc, customer_feedback, guest_checkout
 
 from ..dependencies.database import engine
 
@@ -13,3 +13,4 @@ def index():
     data_analysis.Base.metadata.create_all(engine)
     System_doc.Base.metadata.create_all(engine)
     customer_feedback.Base.metadata.create_all(engine)
+    guest_checkout.Base.metadata.create_all(engine)
