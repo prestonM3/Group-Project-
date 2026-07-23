@@ -12,7 +12,18 @@ class PromoCode(Base):
     expiration_date = Column(DATETIME, nullable=False)
 
     # Functions
-    validation = None
-    apply_discount = None
+
+    # Validation method to return true if promo code is still valid
+    def validation(self):
+        return self.expiration_date >= datetime.now()
+
+    # Applies the discounted amount to the order total
+    def apply_discount(self, total):
+        if not self.validation():
+            return total
+
+        discount_total = total * (self.discount / 100)
+
+        return total - discount_total
 
     orders = relationship("Order", back_populates="promo_code")

@@ -9,10 +9,8 @@ class PromoCodeBase(BaseModel):
 class PromoCodeCreate(PromoCodeBase):
     pass
 
-
 class PromoCode(PromoCodeBase):
     id: int
-    updated_at: datetime
 
     class Config:
         from_attributes = True
