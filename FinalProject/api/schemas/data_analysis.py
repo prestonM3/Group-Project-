@@ -13,7 +13,7 @@ class DataAnalysisCreate(DataAnalysisBase):
 
 class DataAnalysisResponse(DataAnalysisBase):
     id: int
-    generated_at: datetime
+    date: datetime
 
     class Config:
         from_attributes = True

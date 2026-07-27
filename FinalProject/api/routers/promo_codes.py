@@ -15,7 +15,7 @@ router = APIRouter(
 def create_promo_code(promo_data: PromoCodeCreate, db: Session = Depends(get_db)):
     return promo_codes.create(promo_data, db)
 
-@router.get("/", response_mode=List[PromoCode])
+@router.get("/", response_model=List[PromoCode])
 def get_all_promo_codes(db: Session = Depends(get_db)):
     return promo_codes.read_all(db)
 

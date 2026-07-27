@@ -14,7 +14,7 @@ class SystemDocumentationCreate(SystemDocumentationBase):
 
 class SystemDocumentationResponse(SystemDocumentationBase):
     id: int
-    updated_at: datetime
+    last_updated: datetime
 
     class Config:
         from_attributes = True
