@@ -14,12 +14,7 @@ router = APIRouter(
 def create(request: schema.OrderCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, request=request)
 
-@router.post("/place-order", response_model=schema.Order)
-def place_order(
-    request: schema.OrderCreate,
-    db: Session = Depends(get_db)
-):
-    return controller.place_order(db=db, request=request)
+
 
 @router.get("/", response_model=list[schema.Order])
 def read_all(db: Session = Depends(get_db)):
