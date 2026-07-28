@@ -7,11 +7,10 @@ class PromoCode(Base):
     __tablename__ = "promo_codes"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    promo_code = Column(String(20), nullable=False, unique=True)
+    promo_code = Column(String(15), nullable=False, unique=True)
     discount = Column(Integer, index=True, nullable=False)
     expiration_date = Column(DATETIME, nullable=False)
 
-    # Functions
 
     # Validation method to return true if promo code is still valid
     def validation(self):

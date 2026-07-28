@@ -3,7 +3,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from .routers import index as indexRoute
-from .routers import data_analysis, guest_checkout, menu_items, order_items, order_tracking, orders, payment, promo_codes, system_documentation
+from .routers import data_analysis, guest_checkout, menu_items
+from .routers import order_items, order_tracking, orders, payment, promo_codes, system_documentation
 from .models import model_loader
 from .dependencies.config import conf
 

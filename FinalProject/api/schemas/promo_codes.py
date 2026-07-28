@@ -2,7 +2,6 @@ from pydantic import BaseModel
 from datetime import datetime
 
 class PromoCodeBase(BaseModel):
-    promo_code: str
     discount: int
     expiration_date: datetime
 
@@ -11,6 +10,7 @@ class PromoCodeCreate(PromoCodeBase):
 
 class PromoCode(PromoCodeBase):
     id: int
+    promo_code: str
 
     class Config:
         from_attributes = True
