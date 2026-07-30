@@ -19,7 +19,7 @@ def create_promo_code(promo_data: PromoCodeCreate, db: Session = Depends(get_db)
 def get_all_promo_codes(db: Session = Depends(get_db)):
     return promo_codes.read_all(db)
 
-@router.get("/[{promo_id}]", response_model=PromoCode)
+@router.get("/{promo_id}", response_model=PromoCode)
 def get_one_promo_code(promo_id: int, db: Session = Depends(get_db)):
     return promo_codes.read_one(promo_id, db)
 
