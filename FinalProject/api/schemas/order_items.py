@@ -21,6 +21,6 @@ class OrderItemUpdate(BaseModel):
 class OrderItem(OrderItemBase):
     id: int
     order_id: int
-    menu_item: MenuItem = None
+    menu_items: MenuItem = None
 
     model_config = ConfigDict(from_attributes=True)

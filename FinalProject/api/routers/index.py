@@ -4,14 +4,12 @@ from . import orders, order_items, menu_items, payment, order_tracking, data_ana
 
 def load_routes(app):
     app.include_router(orders.router)
+    app.include_router(order_tracking.router)
     app.include_router(order_items.router)
     app.include_router(menu_items.router)
-    app.include_router(order_tracking.router)
     app.include_router(payment.router)
+    app.include_router(promo_codes.router)
+    app.include_router(guest_checkout.router)
+    app.include_router(customer_feedback.router)
     app.include_router(data_analysis.router)
     app.include_router(system_documentation.router)
-    app.include_router(guest_checkout.router)
-    app.include_router(promo_codes.router)
-    app.include_router(customer_feedback.router)
-
-
