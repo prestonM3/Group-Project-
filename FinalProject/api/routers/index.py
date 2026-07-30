@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from . import orders, order_items, payment, order_tracking, data_analysis, system_documentation, guest_checkout, promo_codes
+from . import orders, order_items, payment, order_tracking, data_analysis, system_documentation, guest_checkout, promo_codes, customer_feedback
 
 
 def load_routes(app):
@@ -11,5 +11,6 @@ def load_routes(app):
     app.include_router(system_documentation.router)
     app.include_router(guest_checkout.router)
     app.include_router(promo_codes.router)
+    app.include_router(customer_feedback.router)
 
 
