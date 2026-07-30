@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..controllers import payment
-from ..schemas.payment import PaymentCreate, Payment
+from ..schemas.payment import PaymentCreate, PaymentUpdate, Payment
 from ..dependencies.database import get_db
 
 router = APIRouter(
@@ -24,7 +24,7 @@ def get_one_payment(payment_id: int, db: Session = Depends(get_db)):
     return payment.read_one(payment_id, db)
 
 @router.put("/{payment_id}", response_model=Payment)
-def update_payment(payment_id: int, payment_data: PaymentCreate, db: Session = Depends(get_db)):
+def update_payment(payment_id: int, payment_data: PaymentUpdate, db: Session = Depends(get_db)):
     return payment.update(payment_id, payment_data, db)
 
 @router.delete("/{payment_id}")

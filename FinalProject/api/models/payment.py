@@ -11,7 +11,7 @@ class Payment(Base):
     order_id = Column(Integer, ForeignKey("orders.id"), nullable=False, unique=True)
     payment_type = Column(String(8), index=True, nullable=False, default="PENDING")
     payment_status = Column(String(8), index=True, nullable=False)
-    card_type = Column(String(8), index=True, nullable=False)
+    card_type = Column(String(20), index=True, nullable=False)
     card_number = Column(String(16), nullable=False)
     card_expiry_date = Column(DATETIME, nullable=False)
     confirmation_code = Column(Integer, index=True, nullable=True)

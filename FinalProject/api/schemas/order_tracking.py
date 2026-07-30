@@ -1,6 +1,5 @@
-from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, computed_field
+from pydantic import BaseModel, computed_field, ConfigDict
 from datetime import datetime, timedelta
 
 class OrderTrackingBase(BaseModel):
@@ -29,5 +28,4 @@ class OrderTracking(OrderTrackingBase):
             return None
         return self.order_time + timedelta(minutes=self.estimated_minutes)
 
-    class ConfigDict:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

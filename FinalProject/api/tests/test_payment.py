@@ -28,15 +28,15 @@ def test_submit_payment(db_session):
     payment_object = model.Payment(**payment1)
 
     # Call the create_payment function
-    fake_payment1 = payment.create_payment(payment_object, db_session)
+    fake_payment1 = payment.create(payment_object, db_session)
 
     # Assertions
     assert fake_payment1 is not None
     assert fake_payment1.order_id == 1
     assert fake_payment1.payment_type == "CREDIT"
     assert fake_payment1.card_type == "DISCOVER"
-    assert fake_payment1.payment_type == "SUCCESS"
-    assert fake_payment1.confirmation_code is None
+    assert fake_payment1.payment_status == "SUCCESS"
+    assert fake_payment1.confirmation_code is not None
 
 # Test for payment failure
 def test_create_payment_failure(db_session):
@@ -52,7 +52,7 @@ def test_create_payment_failure(db_session):
 
     payment_object2 = model.Payment(**payment2)
 
-    fake_payment2 = payment.create_payment(payment_object2, db_session)
+    fake_payment2 = payment.create(payment_object2, db_session)
 
     # Assertions
     assert fake_payment2 is not None

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 class PaymentBase(BaseModel):
@@ -11,10 +11,16 @@ class PaymentBase(BaseModel):
 class PaymentCreate(PaymentBase):
     pass
 
+class PaymentUpdate(BaseModel):
+    order_id: int | None = None
+    payment_type: str | None = None
+    card_type: str | None = None
+    card_number: str | None = None
+    card_expiry_date: datetime | None = None
+
 class Payment(PaymentBase):
     id: int
     payment_status: str
     confirmation_code: int | None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

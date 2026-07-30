@@ -12,4 +12,4 @@ class MenuItem(Base):
     ingredients = Column(String(300))
     calories = Column(Integer)
     price = Column(DECIMAL(6, 2), nullable=False, server_default='0.0')
-    order_items = relationship("OrderItem", back_populates="menu_items")
+    order_items = relationship("OrderItem", back_populates="menu_item")

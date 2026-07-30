@@ -11,7 +11,3 @@ class SystemDocumentation(Base):
     category = Column(String(50), nullable=False)
     content = Column(Text, nullable=False)
     last_updated = Column(DATETIME, nullable=False, default=datetime.utcnow)
-
-    # Functions
-    update_document = None
-    view_document = None

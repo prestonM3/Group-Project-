@@ -3,7 +3,7 @@ from fastapi import HTTPException, status, Response
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..models.payment import Payment
-from ..schemas.payment import PaymentCreate
+from ..schemas.payment import PaymentCreate, PaymentUpdate
 
 # Create new payment to submit and store in database
 def create(payment: PaymentCreate, db: Session):
@@ -52,7 +52,7 @@ def read_one(payment_id: int, db: Session):
         db_payment = db.query(Payment).filter(Payment.id == payment_id).first()
 
         if db_payment is None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found")
 
     except SQLAlchemyError as e:
         error = str(e)
@@ -61,7 +61,7 @@ def read_one(payment_id: int, db: Session):
     return db_payment
 
 # Update payment data saved in database
-def update(payment_id: int, payment_data: PaymentCreate, db: Session):
+def update(payment_id: int, payment_data: PaymentUpdate, db: Session):
     try:
         db_payment = db.query(Payment).filter(Payment.id == payment_id)
 
@@ -84,7 +84,7 @@ def delete(payment_id: int, db: Session):
         payment = db.query(Payment).filter(Payment.id == payment_id).first()
 
         if payment is None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Id not found!")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
 
         db.delete(payment)
         db.commit()

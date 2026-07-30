@@ -11,14 +11,16 @@ client = TestClient(app)
 
 @pytest.fixture
 def db_session(mocker):
-    return mocker.Mock()
+    session = mocker.Mock()
+    # No existing promo code collides, so generate_promo_code() succeeds on its first attempt.
+    session.query.return_value.filter.return_value.first.return_value = None
+    return session
 
 # Testing the create promo code method
 def test_create_promo_code(db_session):
     promo_code_data = {
-        "promo_code": "PRMCD2026",
         "discount": 30,
-        "expiration_date": datetime(2026,12,31)
+        "expiration_date": datetime(2026, 12, 31)
     }
 
     promo_code_object = model.PromoCode(**promo_code_data)
@@ -28,7 +30,9 @@ def test_create_promo_code(db_session):
 
     # Assertions
     assert promo_code is not None
-    assert promo_code.promo_code == "PRMCD2026"
+    # promo_code is now generated server-side rather than client-supplied
+    assert isinstance(promo_code.promo_code, str)
+    assert len(promo_code.promo_code) == 15
     assert promo_code.discount == 30
 
 

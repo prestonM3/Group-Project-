@@ -1,10 +1,11 @@
 from fastapi import FastAPI
-from . import orders, order_items, payment, order_tracking, data_analysis, system_documentation, guest_checkout, promo_codes, customer_feedback
+from . import orders, order_items, menu_items, payment, order_tracking, data_analysis, system_documentation, guest_checkout, promo_codes, customer_feedback
 
 
 def load_routes(app):
     app.include_router(orders.router)
     app.include_router(order_items.router)
+    app.include_router(menu_items.router)
     app.include_router(order_tracking.router)
     app.include_router(payment.router)
     app.include_router(data_analysis.router)

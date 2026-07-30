@@ -16,7 +16,7 @@ def test_guest_checkout_lifecycle():
     }
     
     # Send the data to your endpoint (adjust the URL path if needed)
-    response = client.post("/guest_checkout/", json=payload)
+    response = client.post("/guest-checkout/", json=payload)
     
     # Assert that the database saved it and returned success
     assert response.status_code == 200 or response.status_code == 201
@@ -28,6 +28,6 @@ def test_guest_checkout_lifecycle():
     checkout_id = data["id"]
     
     # 2. Test Reading the Checkout back
-    get_response = client.get(f"/guest_checkout/{checkout_id}")
+    get_response = client.get(f"/guest-checkout/{checkout_id}")
     assert get_response.status_code == 200
     assert get_response.json()["summary"] == "1x Test Burger"

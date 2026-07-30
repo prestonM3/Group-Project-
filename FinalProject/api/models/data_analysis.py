@@ -11,7 +11,3 @@ class DataAnalysis(Base):
     metric = Column(String(100), nullable=False)
     value = Column(DECIMAL(10,2), nullable=False)
     date = Column(DATETIME, nullable=False, default=datetime.utcnow)
-
-    # Functions
-    generate_report = None
-    view_statistics = None

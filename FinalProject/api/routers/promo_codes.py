@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
 from ..controllers import promo_codes
-from ..schemas.promo_codes import PromoCode, PromoCodeCreate
+from ..schemas.promo_codes import PromoCode, PromoCodeCreate, PromoCodeUpdate
 from ..dependencies.database import get_db
 
 router = APIRouter(
@@ -24,7 +24,7 @@ def get_one_promo_code(promo_id: int, db: Session = Depends(get_db)):
     return promo_codes.read_one(promo_id, db)
 
 @router.put("/{promo_id}", response_model=PromoCode)
-def update_promo_code(promo_id: int, promo_code: PromoCodeCreate, db: Session = Depends(get_db)):
+def update_promo_code(promo_id: int, promo_code: PromoCodeUpdate, db: Session = Depends(get_db)):
     return promo_codes.update(promo_id, promo_code, db)
 
 @router.delete("/{promo_id}", status_code=204)

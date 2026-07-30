@@ -1,8 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, Enum as SQLEnum
-from sqlalchemy.ext.declarative import declarative_base
+from ..dependencies.database import Base
 import enum
-
-Base = declarative_base()
 
 class OrderTypeEnum(enum.Enum):
     DELIVERY = "Delivery"

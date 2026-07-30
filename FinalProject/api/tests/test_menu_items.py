@@ -126,7 +126,7 @@ def test_update_menu_item(db_session, mocker):
     query_mock.first.return_value = updated_item
 
     request = mocker.Mock()
-    request.dict.return_value = {"name": "Turkey Club Deluxe", "price": 9.99}
+    request.model_dump.return_value = {"name": "Turkey Club Deluxe", "price": 9.99}
 
     result = controller.update(db_session, item_id=1, request=request)
 
@@ -155,7 +155,7 @@ def test_update_menu_item_db_error(db_session, mocker):
     db_session.commit.side_effect = error
 
     request = mocker.Mock()
-    request.dict.return_value = {"name": "Duplicate Name"}
+    request.model_dump.return_value = {"name": "Duplicate Name"}
 
     with pytest.raises(HTTPException) as exc_info:
         controller.update(db_session, item_id=1, request=request)

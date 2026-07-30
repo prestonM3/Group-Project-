@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from .order_items import OrderItem
 from .promo_codes import PromoCode
 from .payment import Payment
@@ -39,5 +39,4 @@ class Order(OrderBase):
     order_tracking: Optional[OrderTracking] = None
     feedback: Optional[CustomerFeedback] = None
 
-    class ConfigDict:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

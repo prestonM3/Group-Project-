@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 
@@ -15,8 +15,7 @@ class DataAnalysisResponse(DataAnalysisBase):
     id: int
     date: datetime
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 class DataAnalysisUpdate(BaseModel):
     report_name: str | None = None

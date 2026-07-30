@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 from .menu_items import MenuItem
 
 
@@ -23,5 +23,4 @@ class OrderItem(OrderItemBase):
     order_id: int
     menu_item: MenuItem = None
 
-    class ConfigDict:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

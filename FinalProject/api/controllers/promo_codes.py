@@ -1,11 +1,12 @@
-import random, string
+import random
+import string
 
 from sqlalchemy.orm import Session
 from fastapi import HTTPException, status, Response
 from sqlalchemy.exc import SQLAlchemyError
 
 from ..models.promo_codes import PromoCode
-from ..schemas.promo_codes import PromoCodeCreate
+from ..schemas.promo_codes import PromoCodeCreate, PromoCodeUpdate
 
 # Generate a unique promo code
 def generate_promo_code(db: Session, length: int = 15) -> str:
@@ -15,17 +16,18 @@ def generate_promo_code(db: Session, length: int = 15) -> str:
     for attempt in range(max_attempts):
         code = "".join(random.choices(chars, k=length))
 
-        existing_codes = db.query(PromoCode).filter(
+        existing_code = db.query(PromoCode).filter(
             PromoCode.promo_code == code
         ).first()
 
-        if existing_codes is None:
+        if existing_code is None:
             return code
 
     raise HTTPException(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         detail="Failed to generate a unique promo code"
     )
+
 # Create a promo code
 def create(promo: PromoCodeCreate, db: Session):
     db_promo = PromoCode(
@@ -73,7 +75,7 @@ def read_one(promo_id: int, db: Session):
     return db_promo
 
 # Update a promo code in the database
-def update(promo_id: int, promo_data: PromoCodeCreate, db: Session):
+def update(promo_id: int, promo_data: PromoCodeUpdate, db: Session):
     try:
         db_promo = db.query(PromoCode).filter(
             PromoCode.id == promo_id
@@ -82,8 +84,8 @@ def update(promo_id: int, promo_data: PromoCodeCreate, db: Session):
         if db_promo is None:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found")
 
-        db_promo.discount = promo_data.discount
-        db_promo.expiration_date = promo_data.expiration_date
+        for field, value in promo_data.model_dump(exclude_unset=True).items():
+            setattr(db_promo, field, value)
 
         db.commit()
         db.refresh(db_promo)

@@ -11,7 +11,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=schema.CustomerFeedbackCreate)
+@router.post("/", response_model=schema.CustomerFeedback)
 def create(request: schema.CustomerFeedbackCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, request=request)
 
