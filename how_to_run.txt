@@ -1,3 +1,23 @@
+** for group members: clone and remove .git folder so youre not tracked on the repo 
+
+mac: 
+git clone https://github.com/prestonM3/Group-Project-.git
+rm -rf Group-Project-/.git
+
+windows command prompt:
+git clone https://github.com/prestonM3/Group-Project-.git
+cd Group-Project-
+rmdir /s /q .git
+
+windows powershell: 
+git clone https://github.com/prestonM3/Group-Project-.git
+cd Group-Project-
+Remove-Item -Recurse -Force .git
+
+
+
+
+
 1. start MySQL workshop locally
 2. CREATE DATABASE order_system_api CHARACTER SET utf8mb4;
 3. Edit config.py to your own db_user/db_password
