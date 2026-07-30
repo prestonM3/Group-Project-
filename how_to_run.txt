@@ -21,6 +21,6 @@ Remove-Item -Recurse -Force .git
 1. start MySQL workshop locally
 2. CREATE DATABASE order_system_api CHARACTER SET utf8mb4;
 3. Edit config.py to your own db_user/db_password
-4. pip install -r requirements.txt
+4. cd FinalProject && pip install -r requirements.txt
 5. uvicorn api.main:app --reload → tables auto-create, but empty
 6. localhost:8000/docs → works, but there's nothing to GET until you POST some data first
