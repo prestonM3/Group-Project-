@@ -73,7 +73,7 @@ def update(db: Session, item_id, request):
                 detail="Id not found!"
             )
 
-        update_data = request.dict(exclude_unset=True)
+        update_data = request.model_dump(exclude_unset=True)
         item.update(update_data, synchronize_session=False)
         db.commit()
 
