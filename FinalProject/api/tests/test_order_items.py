@@ -15,41 +15,27 @@ client = TestClient(app)
 def db_session(mocker):
     return mocker.Mock()
 
-def test_create_order_item(db_session):
-    pass
+def test_order_item(db_session):
+    # Create a sample order item
+    order_item_data = {
+        "quantity" : 3,
+        # "order_id" == 1,
+        # "menu_item_id" == 1
+    }
 
-def test_create_order_item_db_error(db_session):
-    pass
+    order_item_object = model.OrderItem(**order_item_data)
 
-def test_read_all_order_items(db_session):
-    pass
+    # Call the create function
+    created_order_item = controller.create(db_session, order_item_object)
 
-def test_read_all_order_items_db_error(db_session):
-    pass
+    # Assert that the database returned success
+    order_item_get = client.get(f"/orderitems/")
+    assert order_item_get.status_code == 200
 
-def test_read_one_order_item(db_session):
-    pass
+    # Assert that the post was accurate and reading works
+    assert created_order_item is not None
+    assert created_order_item.quantity == 3
 
-def test_read_one_order_item_not_found(db_session):
-    pass
-
-def test_read_one_order_item_db_error(db_session):
-    pass
-
-def test_update_order_item(db_session):
-    pass
-
-def test_update_order_item_not_fount(db_session):
-    pass
-
-def test_update_order_item_db_error(db_session):
-    pass
-
-def test_delete_order_item(db_session):
-    pass
-
-def test_delete_order_item_not_found(db_session):
-    pass
-
-def test_delete_order_item_db_error(db_session):
-    pass
+    db_session.add.assert_called_once()
+    db_session.commit.assert_called_once()
+    db_session.refresh.assert_called_once()

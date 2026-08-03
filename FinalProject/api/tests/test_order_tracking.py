@@ -15,41 +15,28 @@ client = TestClient(app)
 def db_session(mocker):
     return mocker.Mock()
 
-def test_create_order_tracking(db_session):
-    pass
+def test_order_tracking(db_session):
+    # Create a sample order tracker
+    order_tracking_data = {
+        "status" : "received",
+        "estimated_minutes" : 30
+    }
 
-def test_create_order_tracking_db_error(db_session):
-    pass
+    order_tracking_object = model.OrderTracking(**order_tracking_data)
 
-def test_read_all_order_tracking(db_session):
-    pass
+    # Call the create function
+    created_order_tracking = controller.create(db_session, order_tracking_object)
 
-def test_read_all_order_tracking_db_error(db_session):
-    pass
+    # Assert that the database returned success
+    order_tracking_get = client.get(f"/order_tracking/")
+    assert order_tracking_get.status_code == 200
 
-def test_read_one_order_tracking(db_session):
-    pass
+    # Assert that the post was accurate and reading works
+    assert created_order_tracking is not None
+    assert created_order_tracking.status == "received"
+    assert created_order_tracking.estimated_minutes == 30
 
-def test_read_one_order_tracking_not_found(db_session):
-    pass
+    db_session.add.assert_called_once()
+    db_session.commit.assert_called_once()
+    db_session.refresh.assert_called_once()
 
-def test_read_one_order_tracking_db_error(db_session):
-    pass
-
-def test_update_order_tracking(db_session):
-    pass
-
-def test_update_order_tracking_not_fount(db_session):
-    pass
-
-def test_update_order_tracking_db_error(db_session):
-    pass
-
-def test_delete_order_tracking(db_session):
-    pass
-
-def test_delete_order_tracking_not_found(db_session):
-    pass
-
-def test_delete_order_tracking_db_error(db_session):
-    pass
